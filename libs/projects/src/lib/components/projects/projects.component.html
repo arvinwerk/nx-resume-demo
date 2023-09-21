@@ -1,0 +1,9 @@
+<div>
+  <div *ngFor="let project of projects">
+    <h2>{{project.title}}</h2>
+  
+    <small>{{project.company}}</small>
+
+    <p [innerHTML]="project.shortDescription"></p>
+  </div>
+</div>

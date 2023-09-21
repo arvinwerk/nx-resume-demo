@@ -1,0 +1,6 @@
+<div>
+  <button [ngStyle]="{background: keyword.selected ? '#ff0000' : '#ededed'}" *ngFor="let keyword of keywordOptions"
+          (click)="toggleKeyword(keyword)">
+    {{keyword.key}}
+  </button>
+</div>
