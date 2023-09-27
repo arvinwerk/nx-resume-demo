@@ -25,6 +25,6 @@ describe('AppStore', () => {
 
     service.setProducts(products);
     
-    expect(service.projects$()).toEqual(products);
+    expect(service.filteredProjects$()).toEqual(products);
   });
 });

@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "plain-resume": "nx serve plain-resume",
-    "coverage": "npx nx run-many --all --target=test --codeCoverage"
+    "coverage": "npx nx run-many --all --target=test --codeCoverage",
+    "e2e": "nx e2e plain-resume-e2e",
+    "e2e-watch": "nx e2e plain-resume-e2e --watch"
   },
   "private": true,
   "dependencies": {
