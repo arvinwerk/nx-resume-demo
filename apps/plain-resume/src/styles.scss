@@ -82,6 +82,19 @@ img {
   outline-offset: 3px;
 }
 
+.keyword-chip,
+.text-button,
+.starter,
+.send-button,
+[data-role="project"],
+#intro,
+#skills,
+#projects,
+#experience,
+#contact {
+  scroll-margin-top: 6rem;
+}
+
 .skip-link {
   position: absolute;
   left: 1rem;
