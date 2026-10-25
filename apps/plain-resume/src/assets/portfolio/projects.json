@@ -1,0 +1,82 @@
+[
+  {
+    "company": "We-Invite",
+    "title": "Vrienden van Amstel VIP 2024",
+    "shortDescription": "Web shop and admin for the Vrienden van Amstel VIP arrangements 2024, covering front end and back end.",
+    "longDescription": "The web shop is <a href=\"https://vvalvip2024.we-invite.shop\" target=\"_blank\" rel=\"noopener noreferrer\">available here</a>.",
+    "keywords": ["Laravel", "Angular"],
+    "images": []
+  },
+  {
+    "company": "We-Invite",
+    "title": "Seating tool and invitations",
+    "shortDescription": "Used for the <b>National Remembrance Day 2023</b> and <b>The Bodyguard</b>, among other events.",
+    "longDescription": "The seating tool lets organisations place visitors on a floor plan. It was used at the <b>National Remembrance Day</b>, with guests including <b>Prime Minister Rutte</b>, the <b>King</b> and the <b>Queen</b>.",
+    "keywords": ["Laravel"],
+    "images": ["dodenherdenking.png"]
+  },
+  {
+    "company": "Arpo entertainment",
+    "title": "Infrared ticket-scanner app",
+    "shortDescription": "Used at the <b>Dutch Grand Prix in Zandvoort</b>, <b>Vrienden van Amstel</b> in Ahoy, and <b>Prinsjesdag</b>, among other events.",
+    "longDescription": "Ionic app for scanning QR codes. I also built the system that generates barcoded tickets and emails them out.",
+    "keywords": ["Ionic", "Angular"],
+    "images": ["f1.png", "heineken.png", "angular.png", "ionic.png"]
+  },
+  {
+    "company": "Ziggo",
+    "title": "Microservice / middleware",
+    "shortDescription": "A microservice that supplies outage data to ziggo.nl.",
+    "longDescription": "On ziggo.nl people can see whether there is an outage at their home address. That check uses an external API connected through a Node.js middleware microservice. When that middleware had problems, I supported Ziggo by debugging it.",
+    "keywords": ["NodeJS"],
+    "images": ["ziggo.png", "nodejs.png"]
+  },
+  {
+    "company": "Ziggo",
+    "title": "Internal profiles page",
+    "shortDescription": "An internal profiles page for employees.",
+    "longDescription": "To help colleagues get to know each other and to measure satisfaction, I built an AngularJS profiles page. Employees could fill in a monthly survey about how satisfied they were.",
+    "keywords": ["NodeJS", "SailsJS", "Angular", "AngularJS"],
+    "images": ["ziggo.png", "angular.png"]
+  },
+  {
+    "company": "Arpo entertainment",
+    "title": "Welcome screen after ticket check-in",
+    "shortDescription": "A welcome screen that greets a visitor live after their ticket is checked in.",
+    "longDescription": "The welcome screen was used during the King Willem I prize-winners dinner, with Queen Máxima among the guests.",
+    "keywords": ["Ionic", "Angular"],
+    "images": ["angular.png", "ionic.png", "kwi.png"]
+  },
+  {
+    "company": "Temporary Work Design",
+    "title": "Time tracking",
+    "shortDescription": "A time-tracking tool for hours and billability.",
+    "longDescription": "Temporary Work Design is jointly responsible for the wind turbines on the North Sea, among other work. We built a time-tracking tool on top of the AFAS API so their hours and billability were visible.",
+    "keywords": ["Ionic", "Angular", "DOT.NET", "C#", "Afas"],
+    "images": ["angular.png", "ionic.png"]
+  },
+  {
+    "company": "Sanoma",
+    "title": "Swipe & Shop app",
+    "shortDescription": "Swipe & Shop is best described as Tinder for fashion.",
+    "longDescription": "I was responsible for the app's back end: improving imports of large product feeds, and designing an algorithm that made people more likely to see products they would buy. That work involved Heroku, Docker and AWS S3.",
+    "keywords": ["Ionic", "Angular", "PHP", "ZANOX", "AWS", "S3", "Heroku"],
+    "images": []
+  },
+  {
+    "company": "Meander ziekenhuis Amersfoort",
+    "title": "Roster generator",
+    "shortDescription": "Automatic generation of the doctors' roster.",
+    "longDescription": "The roster used to be assembled by hand and took a long time to finish. We built a tool that generated it, taking monthly hours, leave and vacation days into account. I was responsible for the front end: showing the generated roster and editing it there. It was never put into day-to-day use, but it worked functionally.",
+    "keywords": ["Laravel", "PHP", "Angular"],
+    "images": []
+  },
+  {
+    "company": "Arpo entertainment",
+    "title": "Back office and dynamic registration",
+    "shortDescription": "Managing registration pages, tickets and visitors for We-Invite.",
+    "longDescription": null,
+    "keywords": ["Angular", "Laravel", "Capistrano", "Redis", "PHP"],
+    "images": []
+  }
+]

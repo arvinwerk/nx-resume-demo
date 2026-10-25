@@ -1,4 +1,4 @@
-import { Injectable, Signal, computed, effect, inject, signal } from "@angular/core";
+import { Injectable, Signal, computed, signal } from "@angular/core";
 import { OptionModel, ProjectModel } from "@nx-resume/projects";
 
 @Injectable({ providedIn: 'root' })
@@ -15,9 +15,12 @@ export class AppStore {
       if (keywords.length === 0) {
         return projects;
       }
-      return projects.filter((p) => {
-        return p.keywords.some((keyword) => keywords.includes(keyword))
-      })
+      return projects.filter((project) =>
+        keywords.some(
+          (keyword) =>
+            project.keywords.includes(keyword) || project.company === keyword
+        )
+      );
     });
   }
 
@@ -40,20 +43,28 @@ export class AppStore {
       });
   }
 
+  public allProjects(): ProjectModel[] {
+    return this.state.$projects();
+  }
+
+  public selectedKeywords(): string[] {
+    return this.state.$selectedKeywords();
+  }
+
   public setProducts(products: ProjectModel[]) {
     this.state.$projects.set(products);
   }
 
+  public setSelectedKeywords(keywords: readonly string[]) {
+    this.state.$selectedKeywords.set([...keywords]);
+  }
+
   public toggleSelection(keyword: string) {
     const keywords = this.state.$selectedKeywords();
-    const found = keywords.some((k) => k === keyword);
-
-    if (found) {
-      this.state.$selectedKeywords
-      .set(keywords.filter((k) => k !== keyword));
-    } else {
-      keywords.push(keyword);
-      this.state.$selectedKeywords.set(keywords);
-    }
+    const found = keywords.some((item) => item === keyword);
+    const next = found
+      ? keywords.filter((item) => item !== keyword)
+      : [...keywords, keyword];
+    this.state.$selectedKeywords.set(next);
   }
 }

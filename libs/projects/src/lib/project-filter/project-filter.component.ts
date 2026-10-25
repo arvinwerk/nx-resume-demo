@@ -9,9 +9,14 @@ import { OptionModel } from '../models/keyword.model';
 })
 export class ProjectFilterComponent {
   @Input() keywordOptions: OptionModel[] = [];
+  @Input() highlightedSkills: readonly string[] = [];
   @Output() keywordClicked: EventEmitter<OptionModel> = new EventEmitter<OptionModel>();
 
   toggleKeyword(keyword: OptionModel) {
     this.keywordClicked.emit(keyword);
+  }
+
+  isHighlighted(key: string): boolean {
+    return this.highlightedSkills?.includes(key) ?? false;
   }
 }

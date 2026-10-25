@@ -8,4 +8,22 @@ import { ProjectModel } from '../../models/project.model';
 })
 export class ProjectsComponent {
   @Input() projects: ProjectModel[] = [];
+  @Input() detailLevel: 'overview' | 'detailed' = 'detailed';
+  @Input() highlightedSkills: readonly string[] = [];
+  @Input() showEmpty = false;
+
+  trackProject(_index: number, project: ProjectModel): number {
+    return project.id;
+  }
+
+  isHot(keyword: string): boolean {
+    return this.highlightedSkills?.includes(keyword) ?? false;
+  }
+
+  isHighlighted(project: ProjectModel): boolean {
+    if (!this.highlightedSkills || this.highlightedSkills.length === 0) {
+      return false;
+    }
+    return project.keywords.some((keyword) => this.highlightedSkills.includes(keyword));
+  }
 }
