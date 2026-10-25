@@ -16,6 +16,10 @@ export class ProjectsComponent {
     return project.id;
   }
 
+  pad(index: number): string {
+    return String(index + 1).padStart(2, '0');
+  }
+
   isHot(keyword: string): boolean {
     return this.highlightedSkills?.includes(keyword) ?? false;
   }

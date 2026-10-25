@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000">
+  <rect width="1600" height="1000" fill="#10140f"/>
+  <text x="90" y="170" font-family="Georgia, serif" font-size="64" fill="#f3efe6">Seating</text>
+  <text x="90" y="240" font-family="Georgia, serif" font-size="32" fill="#d6f25c">Floor plan</text>
+  <path d="M80 860C360 660 560 920 860 740s360-180 680 20" fill="none" stroke="#d6f25c" stroke-width="18"/>
+  <rect x="90" y="320" width="460" height="220" rx="24" fill="#1c3b2c"/>
+  <rect x="590" y="320" width="460" height="220" rx="24" fill="#12261c"/>
+  <rect x="1090" y="320" width="420" height="220" rx="24" fill="#1f7a4d"/>
+</svg>

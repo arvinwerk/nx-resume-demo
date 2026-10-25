@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844">
+  <rect width="390" height="844" fill="#10140f"/>
+  <text x="28" y="120" font-family="Georgia, serif" font-size="40" fill="#f3efe6">Seating</text>
+  <rect x="28" y="180" width="334" height="160" rx="20" fill="#1c3b2c"/>
+  <rect x="28" y="370" width="334" height="160" rx="20" fill="#1f7a4d"/>
+  <rect x="28" y="560" width="180" height="64" rx="32" fill="#d6f25c"/>
+</svg>

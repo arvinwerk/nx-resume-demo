@@ -1,11 +1,19 @@
 <section class="chat-panel" aria-label="Portfolio conversation">
-  <p class="chat-kicker">{{ catalog.profile.name }} · {{ catalog.profile.role }}</p>
-  <p class="chat-prompt" id="portfolio-ask">What would you like to know about me?</p>
+  <div class="chat-heading">
+    <p>Chat</p>
+  </div>
 
-  <div class="chat-log" #log role="log" aria-live="polite" aria-relevant="additions" [attr.aria-busy]="busy">
+  <div
+    class="chat-body"
+    [class.is-empty]="messages.length === 0 && !pending"
+    #log
+    role="log"
+    aria-live="polite"
+    aria-relevant="additions"
+    [attr.aria-busy]="busy">
     <article class="chat-message" *ngFor="let message of messages" [attr.data-role]="message.role">
       <p class="message-label">{{ message.role === 'user' ? 'You' : catalog.profile.name }}</p>
-      <p class="message-body">{{ message.content }}</p>
+      <p>{{ message.content }}</p>
     </article>
     <div class="chat-pending" *ngIf="pending" data-role="thinking" role="status">
       <span class="sr-only">Thinking</span>
@@ -16,6 +24,8 @@
       <span class="think-track" aria-hidden="true"><span></span></span>
     </div>
   </div>
+
+  <p class="chat-prompt" id="portfolio-ask">What would you like to know about me?</p>
 
   <div class="chat-prompts" *ngIf="prompts.length > 0">
     <button
