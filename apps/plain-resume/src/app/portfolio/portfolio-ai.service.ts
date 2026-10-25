@@ -6,6 +6,7 @@ import {
   PortfolioCatalog,
   buildPortfolioSystemPrompt,
   parsePortfolioAIResponse,
+  portfolioQuestionNeedsModel,
   reasonOffline,
 } from '@nx-resume/state';
 import { PORTFOLIO_LANGUAGE_MODEL, PortfolioLanguageModel } from './portfolio-language-model';
@@ -17,28 +18,37 @@ export class PortfolioAiService {
   ) {}
 
   async ask(history: readonly ChatTurn[], catalog: PortfolioCatalog): Promise<PortfolioAIResponse> {
-    if (this.model.configured()) {
+    if (portfolioQuestionNeedsModel(history, catalog) && this.model.configured()) {
       try {
         const raw = await this.model.complete(buildPortfolioSystemPrompt(catalog), history);
         const parsed = parsePortfolioAIResponse(raw, catalog);
         if (parsed.ok) {
-          return parsed.value;
+          return { ...parsed.value, source: 'model' };
         }
-        return safeFailure(
-          'I could not apply that response safely. Ask about a project, a skill, or the work itself.'
-        );
+        return {
+          ...safeFailure(
+            'I could not apply that response safely. Ask about a project, a skill, or the work itself.'
+          ),
+          source: 'model',
+        };
       } catch {
-        return safeFailure(
-          'I cannot reach the model right now. The projects and filters below still work.'
-        );
+        return {
+          ...safeFailure(
+            'I cannot reach the model right now. The projects and filters below still work.'
+          ),
+          source: 'model',
+        };
       }
     }
 
     const parsed = parsePortfolioAIResponse(reasonOffline(history, catalog), catalog);
     if (!parsed.ok) {
-      return safeFailure('I could not answer that from the portfolio. Try one of the questions below.');
+      return {
+        ...safeFailure('I could not answer that from the portfolio. Try one of the questions below.'),
+        source: 'catalog',
+      };
     }
-    return parsed.value;
+    return { ...parsed.value, source: 'catalog' };
   }
 }
 

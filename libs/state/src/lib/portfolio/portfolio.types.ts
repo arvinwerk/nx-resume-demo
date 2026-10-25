@@ -14,10 +14,13 @@ export type PortfolioAction =
   | { type: 'setLayout'; value: PortfolioLayout }
   | { type: 'resetPortfolio' };
 
+export type PortfolioAnswerSource = 'catalog' | 'model';
+
 export interface PortfolioAIResponse {
   message: string;
   actions: PortfolioAction[];
   suggestedQuestions?: string[];
+  source?: PortfolioAnswerSource;
 }
 
 export interface ChatTurn {

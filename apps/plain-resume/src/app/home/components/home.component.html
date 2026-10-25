@@ -8,9 +8,18 @@
   <main
     id="portfolio"
     class="portfolio-stage"
+    [class.is-adapting]="presentation.adapting()"
     [attr.data-layout]="presentation.layout()"
     [attr.data-audience]="presentation.audience()"
     [attr.data-detail]="presentation.detailLevel()">
+    <p class="think-banner" *ngIf="thinking.active()" data-role="thinking">
+      <span class="sr-only">Thinking</span>
+      <span class="think-row" aria-hidden="true">
+        <span class="think-label">{{ thinking.label() }}</span>
+        <span class="think-dots"><span></span><span></span><span></span></span>
+      </span>
+      <span class="think-track" aria-hidden="true"><span></span></span>
+    </p>
     <div class="stage-toolbar">
       <p
         class="adapt-note"
@@ -25,8 +34,8 @@
       </button>
     </div>
 
-    <ng-container *ngFor="let section of presentation.sections(); trackBy: trackSection">
-      <ng-container [ngSwitch]="section">
+    <ng-container *ngFor="let section of animatedSections(); trackBy: trackSection">
+      <ng-container [ngSwitch]="section.id">
         <section class="portfolio-section" *ngSwitchCase="'intro'" data-section="intro">
           <p class="eyebrow">Portfolio</p>
           <h1>{{ catalog().profile.name }}</h1>

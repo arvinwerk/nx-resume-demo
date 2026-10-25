@@ -13,6 +13,7 @@ import {
 } from '@nx-resume/state';
 import { take } from 'rxjs';
 import { PORTFOLIO_PROFILE } from '../../portfolio/portfolio-profile';
+import { PortfolioThinkingState } from '../../portfolio/portfolio-thinking';
 
 @Component({
   selector: 'nx-resume-home',
@@ -28,10 +29,12 @@ export class HomeComponent implements OnInit {
   catalog: Signal<PortfolioCatalog>;
   groups: Signal<CompanyGroup[]>;
   lead: Signal<string>;
+  thinking: PortfolioThinkingState;
 
   constructor() {
     this.appStore = inject(AppStore);
     this.presentation = inject(PortfolioPresentationStore);
+    this.thinking = inject(PortfolioThinkingState);
     this.projectService = inject(ProjectService);
     this.projects$ = this.appStore.filteredProjects$;
     this.keywordOptions$ = this.appStore.projectKeywords$;
@@ -74,8 +77,13 @@ export class HomeComponent implements OnInit {
     return summary ? [summary] : [];
   }
 
-  trackSection(_index: number, section: PortfolioSectionId): string {
-    return section;
+  animatedSections(): { id: PortfolioSectionId; key: string }[] {
+    const revision = this.presentation.revision();
+    return this.presentation.sections().map((id) => ({ id, key: `${id}-${revision}` }));
+  }
+
+  trackSection(_index: number, section: { key: string }): string {
+    return section.key;
   }
 
   trackNote(_index: number, note: string): string {

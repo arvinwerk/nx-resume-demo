@@ -4,10 +4,10 @@
     data-role="project"
     *ngFor="let project of projects; trackBy: trackProject"
     [class.is-highlighted]="isHighlighted(project)">
-    <h3>{{ project.title }}</h3>
+    <h2>{{ project.title }}</h2>
     <p class="project-company">{{ project.company }}</p>
     <ul class="project-keywords">
-      <li *ngFor="let keyword of project.keywords" [class.is-hot]="isHot(keyword)">{{ keyword }}</li>
+      <li *ngFor="let keyword of project.keywords; let last = last" [class.is-hot]="isHot(keyword)">{{ keyword }}</li>
     </ul>
     <div class="project-summary" [innerHTML]="project.shortDescription"></div>
     <div

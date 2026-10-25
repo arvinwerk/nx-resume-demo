@@ -7,7 +7,14 @@
       <p class="message-label">{{ message.role === 'user' ? 'You' : catalog.profile.name }}</p>
       <p class="message-body">{{ message.content }}</p>
     </article>
-    <p class="chat-pending" *ngIf="pending">Thinking…</p>
+    <div class="chat-pending" *ngIf="pending" data-role="thinking" role="status">
+      <span class="sr-only">Thinking</span>
+      <span class="think-row" aria-hidden="true">
+        <span class="think-label">{{ thinkLabel }}</span>
+        <span class="think-dots"><span></span><span></span><span></span></span>
+      </span>
+      <span class="think-track" aria-hidden="true"><span></span></span>
+    </div>
   </div>
 
   <div class="chat-prompts" *ngIf="prompts.length > 0">

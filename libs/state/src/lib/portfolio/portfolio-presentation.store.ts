@@ -24,6 +24,10 @@ export class PortfolioPresentationStore {
   readonly sections = computed(() => sectionsFor(this.state().layout));
   readonly summary = computed(() => adaptationSummary(this.state()));
   readonly customized = computed(() => !isInitialPresentation(this.state()));
+  readonly adapting = signal(false);
+  readonly revision = signal(0);
+
+  private adaptTimer: ReturnType<typeof setTimeout> | null = null;
 
   apply(actions: readonly PortfolioAction[], catalog: PortfolioCatalog): PresentationState {
     if (actions.length === 0) {
@@ -32,11 +36,24 @@ export class PortfolioPresentationStore {
 
     const next = applyPortfolioActions(this.state(), actions, catalog);
     this.state.set(next);
+    this.markAdapting();
     return next;
   }
 
   setProjectTags(tags: readonly string[]): void {
     const current = this.state();
     this.state.set({ ...current, projectTags: [...tags] });
+  }
+
+  private markAdapting(): void {
+    this.revision.update((value) => value + 1);
+    this.adapting.set(true);
+    if (this.adaptTimer) {
+      clearTimeout(this.adaptTimer);
+    }
+    this.adaptTimer = setTimeout(() => {
+      this.adapting.set(false);
+      this.adaptTimer = null;
+    }, 900);
   }
 }

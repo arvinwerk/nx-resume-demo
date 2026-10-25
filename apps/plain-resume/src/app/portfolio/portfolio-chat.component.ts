@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  InjectionToken,
   Input,
   OnDestroy,
   Output,
@@ -13,8 +14,17 @@ import {
   OPENING_QUESTIONS,
   PortfolioAction,
   PortfolioCatalog,
+  portfolioQuestionNeedsModel,
 } from '@nx-resume/state';
 import { PortfolioAiService } from './portfolio-ai.service';
+import { PortfolioThinkingState } from './portfolio-thinking';
+
+export const PORTFOLIO_LOCAL_THINK_MS = new InjectionToken<number>('PORTFOLIO_LOCAL_THINK_MS', {
+  providedIn: 'root',
+  factory: () => 2000,
+});
+
+const THINK_LABELS = ['Thinking', 'Reading the portfolio', 'Choosing a layout'];
 
 @Component({
   selector: 'nx-resume-portfolio-chat',
@@ -30,10 +40,14 @@ export class PortfolioChatComponent implements OnDestroy {
   draft = '';
   busy = false;
   pending = false;
+  thinkLabel = THINK_LABELS[0];
 
   private readonly ai = inject(PortfolioAiService);
+  private readonly thinking = inject(PortfolioThinkingState);
+  private readonly localThinkMs = inject(PORTFOLIO_LOCAL_THINK_MS);
   private requestId = 0;
-  private pendingTimer: ReturnType<typeof setTimeout> | null = null;
+  private cycleTimer: ReturnType<typeof setInterval> | null = null;
+  private revealTimer: ReturnType<typeof setTimeout> | null = null;
 
   get prompts(): readonly string[] {
     return this.messages.length === 0 ? OPENING_QUESTIONS : this.suggestions;
@@ -41,7 +55,8 @@ export class PortfolioChatComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.requestId += 1;
-    this.clearPendingTimer();
+    this.clearThinkTimers();
+    this.thinking.hide();
   }
 
   choose(question: string): void {
@@ -71,16 +86,34 @@ export class PortfolioChatComponent implements OnDestroy {
     this.messages = [...this.messages, { role: 'user', content }];
     this.draft = '';
     this.busy = true;
-    this.scrollLog();
     const requestId = ++this.requestId;
-    this.pendingTimer = setTimeout(() => {
-      if (requestId === this.requestId) {
-        this.pending = true;
-      }
-    }, 180);
+    const theatrical = !portfolioQuestionNeedsModel(this.messages, this.catalog);
+    this.thinkLabel = THINK_LABELS[0];
+    this.pending = theatrical;
+    if (theatrical) {
+      this.startThinkCycle();
+    } else {
+      this.revealTimer = setTimeout(() => {
+        if (requestId === this.requestId && this.busy) {
+          this.pending = true;
+          this.thinking.show('Thinking');
+        }
+      }, 180);
+    }
+    this.scrollLog();
 
     try {
+      const started = Date.now();
       const response = await this.ai.ask(this.messages, this.catalog);
+      if (requestId !== this.requestId) {
+        return;
+      }
+      if (theatrical) {
+        const remaining = this.localThinkMs - (Date.now() - started);
+        if (remaining > 0) {
+          await this.wait(remaining);
+        }
+      }
       if (requestId !== this.requestId) {
         return;
       }
@@ -104,9 +137,34 @@ export class PortfolioChatComponent implements OnDestroy {
       if (requestId === this.requestId) {
         this.busy = false;
         this.pending = false;
-        this.clearPendingTimer();
+        this.clearThinkTimers();
+        this.thinking.hide();
       }
     }
+  }
+
+  private startThinkCycle(): void {
+    this.clearThinkTimers();
+    let step = 0;
+    this.publishThink(THINK_LABELS[0]);
+    this.cycleTimer = setInterval(() => {
+      step = (step + 1) % THINK_LABELS.length;
+      this.publishThink(THINK_LABELS[step]);
+    }, 650);
+  }
+
+  private publishThink(label: string): void {
+    if (!this.busy) {
+      return;
+    }
+    this.thinkLabel = label;
+    this.thinking.show(label);
+  }
+
+  private wait(ms: number): Promise<void> {
+    return new Promise((resolve) => {
+      this.revealTimer = setTimeout(resolve, ms);
+    });
   }
 
   private scrollLog(): void {
@@ -118,10 +176,14 @@ export class PortfolioChatComponent implements OnDestroy {
     });
   }
 
-  private clearPendingTimer(): void {
-    if (this.pendingTimer) {
-      clearTimeout(this.pendingTimer);
-      this.pendingTimer = null;
+  private clearThinkTimers(): void {
+    if (this.cycleTimer) {
+      clearInterval(this.cycleTimer);
+      this.cycleTimer = null;
+    }
+    if (this.revealTimer) {
+      clearTimeout(this.revealTimer);
+      this.revealTimer = null;
     }
   }
 }

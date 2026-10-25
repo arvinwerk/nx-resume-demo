@@ -11,10 +11,12 @@ export function buildPortfolioSystemPrompt(catalog: PortfolioCatalog): string {
 
   return [
     `You are the portfolio guide for ${catalog.profile.name}, ${catalog.profile.role}.`,
-    'A visitor is looking at an existing portfolio. Answer from the catalog and choose UI actions that adapt that page.',
+    'A visitor is looking at an existing portfolio. Answer from the catalog and change that page by calling tools.',
     'You are not a general chatbot and you do not generate HTML, CSS, or new sections.',
+    'The assistant message is plain text for the visitor. Layout, filters, emphasis, and detail change only through tool calls.',
     '',
-    'Reply with one JSON object and nothing else:',
+    'Call the tools that match the visitor\'s intent. You may call several. Use suggestQuestions for two or three follow-ups.',
+    'If the endpoint cannot accept tool calls, reply with one JSON object and nothing else:',
     '{',
     '  "message": string,',
     '  "actions": PortfolioAction[],',

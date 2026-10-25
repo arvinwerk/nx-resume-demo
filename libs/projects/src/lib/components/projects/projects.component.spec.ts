@@ -34,7 +34,7 @@ describe('ProjectsComponent', () => {
 
     const compiled = fixture.nativeElement as HTMLElement;
     fixture.detectChanges();
-    expect(compiled.querySelector('h3')?.textContent).toContain(component.projects[0].title);
+    expect(compiled.querySelector('h2')?.textContent).toContain(component.projects[0].title);
     expect(compiled.querySelector('[data-type="longDescription"]')?.textContent).toContain(component.projects[0].longDescription);
   });
 
