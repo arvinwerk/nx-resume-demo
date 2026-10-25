@@ -1,0 +1,40 @@
+<section class="chat-panel" aria-label="Portfolio conversation">
+  <p class="chat-kicker">{{ catalog.profile.name }} · {{ catalog.profile.role }}</p>
+  <p class="chat-prompt" id="portfolio-ask">What would you like to know about me?</p>
+
+  <div class="chat-log" #log role="log" aria-live="polite" aria-relevant="additions" [attr.aria-busy]="busy">
+    <article class="chat-message" *ngFor="let message of messages" [attr.data-role]="message.role">
+      <p class="message-label">{{ message.role === 'user' ? 'You' : catalog.profile.name }}</p>
+      <p class="message-body">{{ message.content }}</p>
+    </article>
+    <p class="chat-pending" *ngIf="pending">Thinking…</p>
+  </div>
+
+  <div class="chat-prompts" *ngIf="prompts.length > 0">
+    <button
+      type="button"
+      class="starter"
+      data-role="conversation-starter"
+      *ngFor="let prompt of prompts"
+      [disabled]="busy"
+      (click)="choose(prompt)">
+      {{ prompt }}
+    </button>
+  </div>
+
+  <form class="chat-form" (submit)="submit($event)">
+    <label class="sr-only" for="portfolio-question">Ask about this portfolio</label>
+    <input
+      id="portfolio-question"
+      name="question"
+      type="text"
+      maxlength="500"
+      autocomplete="off"
+      placeholder="Ask about a project, a skill, or the work"
+      [value]="draft"
+      [disabled]="busy"
+      (input)="updateDraft($event)" />
+    <button type="submit" class="send-button" [disabled]="!canSend()">Send</button>
+  </form>
+  <p class="chat-caption">Answers stay inside this portfolio. The page only changes through layout, filters, and emphasis.</p>
+</section>

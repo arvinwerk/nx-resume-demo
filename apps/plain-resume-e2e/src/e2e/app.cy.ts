@@ -1,28 +1,16 @@
-import { getGreeting } from '../support/app.po';
-
 describe('plain-resume', () => {
   beforeEach(() => cy.visit('/'));
 
   it('Should filter list', () => {
-    cy.get('nx-resume-projects')
-      .find('> div > div')
-      .then((listing) => {
-        const currentCount = listing.length;
-        cy.get('button').first().click();
+    cy.get('[data-role="project"]').then((listing) => {
+      const currentCount = listing.length;
+      cy.get('[data-role="keyword-filter"]').first().click();
 
-        cy.get('nx-resume-projects')
-          .find('> div > div')
-          .then((listing) => {
-            expect(listing.length).to.lessThan(currentCount);
+      cy.get('[data-role="project"]').should('have.length.lessThan', currentCount);
 
-            cy.get('button').first().click();
+      cy.get('[data-role="keyword-filter"]').first().click();
 
-            cy.get('nx-resume-projects')
-              .find('> div > div')
-              .then((listing) => {
-                expect(listing.length).to.equals(currentCount);
-              });
-          });
-      });
+      cy.get('[data-role="project"]').should('have.length', currentCount);
+    });
   });
 });

@@ -13,9 +13,8 @@ export class ProjectService {
     this.httpClient = inject(HttpClient);
   }
 
-  // Stub for API. Creating an API is out of the scope of my demo
   getProjects(): Observable<ProjectModel[]> {
-    return this.httpClient.get<ProjectModel[]>('/assets/api/projects.json').pipe(map((projects) => projects.map((project, index) => ({
+    return this.httpClient.get<ProjectModel[]>('/assets/portfolio/projects.json').pipe(map((projects) => projects.map((project, index) => ({
       ...project,
       id: index + 1
     }))));

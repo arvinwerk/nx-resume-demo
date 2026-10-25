@@ -1,10 +1,20 @@
 <div>
-  <div *ngFor="let project of projects">
-    <h2>{{project.title}}</h2>
-  
-    <small>{{project.company}}</small>
-
-    <p [innerHTML]="project.shortDescription"></p>
-    <p data-type="longDescription" [innerHTML]="project.longDescription"></p>
-  </div>
+  <article
+    class="project-card"
+    data-role="project"
+    *ngFor="let project of projects; trackBy: trackProject"
+    [class.is-highlighted]="isHighlighted(project)">
+    <h3>{{ project.title }}</h3>
+    <p class="project-company">{{ project.company }}</p>
+    <ul class="project-keywords">
+      <li *ngFor="let keyword of project.keywords" [class.is-hot]="isHot(keyword)">{{ keyword }}</li>
+    </ul>
+    <div class="project-summary" [innerHTML]="project.shortDescription"></div>
+    <div
+      class="project-detail"
+      *ngIf="detailLevel === 'detailed' && project.longDescription"
+      data-type="longDescription"
+      [innerHTML]="project.longDescription"></div>
+  </article>
+  <p class="empty-note" *ngIf="showEmpty">No projects match the current filter.</p>
 </div>

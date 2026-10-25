@@ -27,4 +27,36 @@ describe('AppStore', () => {
     
     expect(service.filteredProjects$()).toEqual(products);
   });
+
+  it('filters by skill and by organisation, and releases the filter again', () => {
+    service.setProducts([
+      {
+        id: 1,
+        title: 'Shop',
+        shortDescription: 'shop',
+        longDescription: null,
+        company: 'We-Invite',
+        images: [],
+        keywords: ['Laravel']
+      },
+      {
+        id: 2,
+        title: 'Middleware',
+        shortDescription: 'middleware',
+        longDescription: null,
+        company: 'Ziggo',
+        images: [],
+        keywords: ['NodeJS']
+      }
+    ]);
+
+    service.toggleSelection('Laravel');
+    expect(service.filteredProjects$().map((project) => project.title)).toEqual(['Shop']);
+
+    service.toggleSelection('Laravel');
+    expect(service.filteredProjects$()).toHaveLength(2);
+
+    service.setSelectedKeywords(['Ziggo']);
+    expect(service.filteredProjects$().map((project) => project.title)).toEqual(['Middleware']);
+  });
 });

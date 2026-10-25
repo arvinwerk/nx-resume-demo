@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CommonModule } from '@angular/common';
 import { ProjectFilterComponent } from './project-filter.component';
 
 describe('ProjectFilterComponent', () => {
@@ -7,6 +8,7 @@ describe('ProjectFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [CommonModule],
       declarations: [ProjectFilterComponent],
     }).compileComponents();
 
