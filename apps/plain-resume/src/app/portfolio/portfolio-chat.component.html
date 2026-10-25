@@ -41,7 +41,7 @@
       [value]="draft"
       [disabled]="busy"
       (input)="updateDraft($event)" />
-    <button type="submit" [disabled]="!canSend()">Send</button>
+    <button type="submit" class="send-button" [disabled]="!canSend()">Send</button>
   </form>
   <p class="chat-caption">Answers stay inside this portfolio. The page only changes through layout, filters, and emphasis.</p>
 </section>

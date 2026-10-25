@@ -71,17 +71,16 @@
         <section class="portfolio-section" *ngSwitchCase="'experience'" data-section="experience">
           <h2>Experience</h2>
           <p class="section-lead">The same projects, grouped by organisation.</p>
-          <div *ngFor="let group of groups(); trackBy: trackCompany">
+          <article class="company-group" *ngFor="let group of groups(); trackBy: trackCompany">
             <h3>{{ group.company }}</h3>
-            <div *ngFor="let project of group.projects; trackBy: trackProject">
-              <h2>{{ project.title }}</h2>
-              <small>{{ project.company }}</small>
-              <p [innerHTML]="project.shortDescription"></p>
-              <p
+            <div class="experience-project" *ngFor="let project of group.projects; trackBy: trackProject">
+              <h4>{{ project.title }}</h4>
+              <div [innerHTML]="project.shortDescription"></div>
+              <div
                 *ngIf="presentation.detailLevel() === 'detailed' && project.longDescription"
-                [innerHTML]="project.longDescription"></p>
+                [innerHTML]="project.longDescription"></div>
             </div>
-          </div>
+          </article>
           <p class="empty-note" *ngIf="catalog().projects.length > 0 && projects$().length === 0">
             No projects match the current filter.
           </p>
