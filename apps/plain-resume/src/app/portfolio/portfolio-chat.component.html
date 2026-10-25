@@ -1,13 +1,13 @@
-<section class="chat-panel" aria-label="Portfolio conversation">
-  <p class="chat-kicker">{{ catalog.profile.name }} · {{ catalog.profile.role }}</p>
-  <p class="chat-prompt" id="portfolio-ask">What would you like to know about me?</p>
+<section aria-label="Portfolio conversation">
+  <p>{{ catalog.profile.name }} · {{ catalog.profile.role }}</p>
+  <p id="portfolio-ask">What would you like to know about me?</p>
 
-  <div class="chat-log" #log role="log" aria-live="polite" aria-relevant="additions" [attr.aria-busy]="busy">
-    <article class="chat-message" *ngFor="let message of messages" [attr.data-role]="message.role">
-      <p class="message-label">{{ message.role === 'user' ? 'You' : catalog.profile.name }}</p>
-      <p class="message-body">{{ message.content }}</p>
+  <div #log role="log" aria-live="polite" aria-relevant="additions" [attr.aria-busy]="busy">
+    <article *ngFor="let message of messages" [attr.data-role]="message.role">
+      <p>{{ message.role === 'user' ? 'You' : catalog.profile.name }}</p>
+      <p>{{ message.content }}</p>
     </article>
-    <div class="chat-pending" *ngIf="pending" data-role="thinking" role="status">
+    <div *ngIf="pending" data-role="thinking" role="status">
       <span class="sr-only">Thinking</span>
       <span class="think-row" aria-hidden="true">
         <span class="think-label">{{ thinkLabel }}</span>
@@ -17,10 +17,9 @@
     </div>
   </div>
 
-  <div class="chat-prompts" *ngIf="prompts.length > 0">
+  <div *ngIf="prompts.length > 0">
     <button
       type="button"
-      class="starter"
       data-role="conversation-starter"
       *ngFor="let prompt of prompts"
       [disabled]="busy"
@@ -29,7 +28,7 @@
     </button>
   </div>
 
-  <form class="chat-form" (submit)="submit($event)">
+  <form (submit)="submit($event)">
     <label class="sr-only" for="portfolio-question">Ask about this portfolio</label>
     <input
       id="portfolio-question"
@@ -41,7 +40,7 @@
       [value]="draft"
       [disabled]="busy"
       (input)="updateDraft($event)" />
-    <button type="submit" class="send-button" [disabled]="!canSend()">Send</button>
+    <button type="submit" [disabled]="!canSend()">Send</button>
   </form>
-  <p class="chat-caption">Answers stay inside this portfolio. The page only changes through layout, filters, and emphasis.</p>
+  <p>Answers stay inside this portfolio. The page only changes through layout, filters, and emphasis.</p>
 </section>

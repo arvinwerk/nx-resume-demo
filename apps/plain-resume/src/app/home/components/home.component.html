@@ -1,18 +1,16 @@
 <a class="skip-link" href="#portfolio">Skip to portfolio</a>
-<div class="portfolio-shell">
+<div>
   <nx-resume-portfolio-chat
-    class="chat-column"
     [catalog]="catalog()"
     (actionsChange)="onPortfolioActions($event)"></nx-resume-portfolio-chat>
 
   <main
     id="portfolio"
-    class="portfolio-stage"
     [class.is-adapting]="presentation.adapting()"
     [attr.data-layout]="presentation.layout()"
     [attr.data-audience]="presentation.audience()"
     [attr.data-detail]="presentation.detailLevel()">
-    <p class="think-banner" *ngIf="thinking.active()" data-role="thinking">
+    <p *ngIf="thinking.active()" data-role="thinking">
       <span class="sr-only">Thinking</span>
       <span class="think-row" aria-hidden="true">
         <span class="think-label">{{ thinking.label() }}</span>
@@ -20,46 +18,36 @@
       </span>
       <span class="think-track" aria-hidden="true"><span></span></span>
     </p>
-    <div class="stage-toolbar">
-      <p
-        class="adapt-note"
-        *ngFor="let note of statusNotes(); trackBy: trackNote"
-        role="status">{{ note }}</p>
-      <button
-        type="button"
-        class="text-button"
-        *ngIf="presentation.customized()"
-        (click)="resetPortfolio()">
-        Reset portfolio
-      </button>
-    </div>
+    <p *ngFor="let note of statusNotes(); trackBy: trackNote" role="status">{{ note }}</p>
+    <button type="button" *ngIf="presentation.customized()" (click)="resetPortfolio()">
+      Reset portfolio
+    </button>
 
     <ng-container *ngFor="let section of animatedSections(); trackBy: trackSection">
       <ng-container [ngSwitch]="section.id">
-        <section class="portfolio-section" *ngSwitchCase="'intro'" data-section="intro">
-          <p class="eyebrow">Portfolio</p>
+        <section *ngSwitchCase="'intro'" data-section="intro">
           <h1>{{ catalog().profile.name }}</h1>
-          <p class="role">{{ catalog().profile.role }}</p>
-          <p class="lead">{{ lead() }}</p>
-          <p class="summary">{{ catalog().profile.summary }}</p>
-          <div class="working-style" *ngIf="presentation.audience() === 'developer'">
-            <p class="working-style-label">How this portfolio is built</p>
+          <p>{{ catalog().profile.role }}</p>
+          <p>{{ lead() }}</p>
+          <p>{{ catalog().profile.summary }}</p>
+          <div *ngIf="presentation.audience() === 'developer'">
+            <p>How this portfolio is built</p>
             <ul>
               <li *ngFor="let note of catalog().profile.workingStyle">{{ note }}</li>
             </ul>
           </div>
         </section>
 
-        <section class="portfolio-section" *ngSwitchCase="'skills'" data-section="skills">
+        <section *ngSwitchCase="'skills'" data-section="skills">
           <h2>Skills</h2>
-          <p class="section-lead">Select a skill to filter the projects. Highlighted skills are the ones in focus.</p>
+          <p>Select a skill to filter the projects. Highlighted skills are the ones in focus.</p>
           <nx-resume-project-filter
             [keywordOptions]="keywordOptions$()"
             [highlightedSkills]="presentation.highlightedSkills()"
             (keywordClicked)="updateKeywordSelections($event)"></nx-resume-project-filter>
         </section>
 
-        <section class="portfolio-section" *ngSwitchCase="'projects'" data-section="projects">
+        <section *ngSwitchCase="'projects'" data-section="projects">
           <h2>Projects</h2>
           <nx-resume-projects
             [projects]="projects$()"
@@ -68,20 +56,20 @@
             [showEmpty]="catalog().projects.length > 0 && projects$().length === 0"></nx-resume-projects>
         </section>
 
-        <section class="portfolio-section" *ngSwitchCase="'experience'" data-section="experience">
+        <section *ngSwitchCase="'experience'" data-section="experience">
           <h2>Experience</h2>
-          <p class="section-lead">The same projects, grouped by organisation.</p>
-          <article class="company-group" *ngFor="let group of groups(); trackBy: trackCompany">
+          <p>The same projects, grouped by organisation.</p>
+          <div *ngFor="let group of groups(); trackBy: trackCompany">
             <h3>{{ group.company }}</h3>
-            <div class="experience-project" *ngFor="let project of group.projects; trackBy: trackProject">
+            <div *ngFor="let project of group.projects; trackBy: trackProject">
               <h4>{{ project.title }}</h4>
               <div [innerHTML]="project.shortDescription"></div>
               <div
                 *ngIf="presentation.detailLevel() === 'detailed' && project.longDescription"
                 [innerHTML]="project.longDescription"></div>
             </div>
-          </article>
-          <p class="empty-note" *ngIf="catalog().projects.length > 0 && projects$().length === 0">
+          </div>
+          <p *ngIf="catalog().projects.length > 0 && projects$().length === 0">
             No projects match the current filter.
           </p>
         </section>
