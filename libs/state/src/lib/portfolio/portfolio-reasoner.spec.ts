@@ -1,6 +1,6 @@
 import { buildCatalog } from './portfolio-catalog';
 import { buildPortfolioSystemPrompt } from './portfolio-prompt';
-import { reasonOffline } from './portfolio-reasoner';
+import { portfolioQuestionNeedsModel, reasonOffline } from './portfolio-reasoner';
 import { parsePortfolioAIResponse } from './portfolio-validation';
 import { OPENING_QUESTIONS, PortfolioProfile } from './portfolio.types';
 
@@ -160,6 +160,16 @@ describe('reasonOffline', () => {
     expect(named.actions).toEqual(
       expect.arrayContaining([{ type: 'filterProjects', tags: ['We-Invite'] }])
     );
+  });
+});
+
+describe('portfolioQuestionNeedsModel', () => {
+  it('keeps catalog questions local and sends open questions to the model', () => {
+    const history = (question: string) => [{ role: 'user' as const, content: question }];
+    expect(portfolioQuestionNeedsModel(history('What have you built?'), catalog)).toBe(false);
+    expect(portfolioQuestionNeedsModel(history('Show me the Laravel work'), catalog)).toBe(false);
+    expect(portfolioQuestionNeedsModel(history('Hello'), catalog)).toBe(true);
+    expect(portfolioQuestionNeedsModel(history('What should I notice first?'), catalog)).toBe(true);
   });
 });
 

@@ -31,10 +31,46 @@ describe('PortfolioAiService', () => {
     );
 
     expect(model.complete).not.toHaveBeenCalled();
+    expect(response.source).toBe('catalog');
     expect(response.actions).toEqual(
       expect.arrayContaining([{ type: 'setLayout', value: 'projects' }])
     );
     expect(response.message).toContain('Vrienden van Amstel VIP 2024');
+  });
+
+  it('does not call the model for a question the catalog can answer', async () => {
+    const model: PortfolioLanguageModel = {
+      configured: () => true,
+      complete: jest.fn(),
+    };
+    const response = await service(model).ask(
+      [{ role: 'user', content: 'What can you bring to my organization?' }],
+      catalog
+    );
+
+    expect(model.complete).not.toHaveBeenCalled();
+    expect(response.source).toBe('catalog');
+    expect(response.actions).toEqual(
+      expect.arrayContaining([{ type: 'setLayout', value: 'impact' }])
+    );
+  });
+
+  it('sends an open question to the model so it can change the layout with tools', async () => {
+    const model: PortfolioLanguageModel = {
+      configured: () => true,
+      complete: jest.fn().mockResolvedValue({
+        message: 'I would start with the technical view.',
+        actions: [{ type: 'setLayout', value: 'technical' }, { type: 'setAudience', value: 'developer' }],
+      }),
+    };
+
+    const response = await service(model).ask([{ role: 'user', content: 'Hello' }], catalog);
+    expect(model.complete).toHaveBeenCalled();
+    expect(response.source).toBe('model');
+    expect(response.actions).toEqual([
+      { type: 'setLayout', value: 'technical' },
+      { type: 'setAudience', value: 'developer' },
+    ]);
   });
 
   it('strips invalid remote actions and keeps the message', async () => {
@@ -51,7 +87,7 @@ describe('PortfolioAiService', () => {
       }),
     };
 
-    const response = await service(model).ask([{ role: 'user', content: 'Stack?' }], catalog);
+    const response = await service(model).ask([{ role: 'user', content: 'Hello' }], catalog);
     expect(response.message).toBe('Looking at Angular.');
     expect(response.actions).toEqual([
       { type: 'setLayout', value: 'technical' },

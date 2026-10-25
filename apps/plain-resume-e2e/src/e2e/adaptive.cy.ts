@@ -9,8 +9,10 @@ describe('adaptive portfolio', () => {
 
     cy.contains('button', 'What can you bring to my organization?').click();
 
+    cy.get('[data-role="thinking"]').should('be.visible');
     cy.contains('What can you bring to my organization?').should('be.visible');
-    cy.get('[data-layout="impact"]').should('exist');
+    cy.get('[data-layout="impact"]', { timeout: 8000 }).should('exist');
+    cy.get('[data-role="thinking"]').should('not.exist');
     cy.get('[data-section="experience"]').should('exist');
     cy.get('[data-section="projects"]').should('not.exist');
     cy.get('[role="status"]').should('contain', 'impact layout');
@@ -29,13 +31,14 @@ describe('adaptive portfolio', () => {
     cy.get('[data-role="conversation-starter"]').first().should('be.visible');
     cy.get('[data-role="project"]').first().scrollIntoView().should('be.visible');
     cy.contains('button', 'What have you built?').click();
-    cy.get('[data-layout="projects"]').should('exist');
+    cy.get('[data-layout="projects"]', { timeout: 8000 }).should('exist');
     cy.get('#portfolio-question').scrollIntoView().should('be.visible');
   });
 
   it('filters projects from a typed question', () => {
     cy.get('#portfolio-question').type('Show me the Laravel work{enter}');
-    cy.get('[data-role="keyword-filter"]').contains('Laravel').should('have.class', 'is-selected');
+    cy.get('[data-role="thinking"]').should('be.visible');
+    cy.get('[data-role="keyword-filter"]', { timeout: 8000 }).contains('Laravel').should('have.class', 'is-selected');
     cy.get('[data-role="project"]').each(($project) => {
       cy.wrap($project).should('contain', 'Laravel');
     });

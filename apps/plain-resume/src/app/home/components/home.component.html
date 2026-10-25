@@ -8,9 +8,18 @@
   <main
     id="portfolio"
     class="portfolio-stage"
+    [class.is-adapting]="presentation.adapting()"
     [attr.data-layout]="presentation.layout()"
     [attr.data-audience]="presentation.audience()"
     [attr.data-detail]="presentation.detailLevel()">
+    <p class="think-banner" *ngIf="thinking.active()" data-role="thinking">
+      <span class="sr-only">Thinking</span>
+      <span class="think-row" aria-hidden="true">
+        <span class="think-label">{{ thinking.label() }}</span>
+        <span class="think-dots"><span></span><span></span><span></span></span>
+      </span>
+      <span class="think-track" aria-hidden="true"><span></span></span>
+    </p>
     <div class="stage-toolbar">
       <p
         class="adapt-note"
@@ -25,8 +34,8 @@
       </button>
     </div>
 
-    <ng-container *ngFor="let section of presentation.sections(); trackBy: trackSection">
-      <ng-container [ngSwitch]="section">
+    <ng-container *ngFor="let section of animatedSections(); trackBy: trackSection">
+      <ng-container [ngSwitch]="section.id">
         <section class="portfolio-section" *ngSwitchCase="'intro'" data-section="intro">
           <p class="eyebrow">Portfolio</p>
           <h1>{{ catalog().profile.name }}</h1>
@@ -62,16 +71,17 @@
         <section class="portfolio-section" *ngSwitchCase="'experience'" data-section="experience">
           <h2>Experience</h2>
           <p class="section-lead">The same projects, grouped by organisation.</p>
-          <article class="company-group" *ngFor="let group of groups(); trackBy: trackCompany">
+          <div *ngFor="let group of groups(); trackBy: trackCompany">
             <h3>{{ group.company }}</h3>
-            <div class="experience-project" *ngFor="let project of group.projects; trackBy: trackProject">
-              <h4>{{ project.title }}</h4>
-              <div [innerHTML]="project.shortDescription"></div>
-              <div
+            <div *ngFor="let project of group.projects; trackBy: trackProject">
+              <h2>{{ project.title }}</h2>
+              <small>{{ project.company }}</small>
+              <p [innerHTML]="project.shortDescription"></p>
+              <p
                 *ngIf="presentation.detailLevel() === 'detailed' && project.longDescription"
-                [innerHTML]="project.longDescription"></div>
+                [innerHTML]="project.longDescription"></p>
             </div>
-          </article>
+          </div>
           <p class="empty-note" *ngIf="catalog().projects.length > 0 && projects$().length === 0">
             No projects match the current filter.
           </p>

@@ -43,6 +43,25 @@ export function reasonOffline(
   };
 }
 
+/**
+ * Known portfolio questions are answered from the catalog.
+ * Anything else is an open question and should go to the model, which
+ * changes the page through tools.
+ */
+export function portfolioQuestionNeedsModel(
+  history: readonly ChatTurn[],
+  catalog: PortfolioCatalog
+): boolean {
+  const latest = [...history].reverse().find((turn) => turn.role === 'user');
+  const text = latest?.content.trim() ?? '';
+  if (!text || catalog.projects.length === 0) {
+    return false;
+  }
+
+  const context = createContext(text, catalog, prefersDutch(text));
+  return detectIntent(context) === 'ambiguous';
+}
+
 type Intent =
   | 'reset'
   | 'metrics'

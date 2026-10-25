@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { buildCatalog } from '@nx-resume/state';
-import { PortfolioChatComponent } from './portfolio-chat.component';
+import { PORTFOLIO_LOCAL_THINK_MS, PortfolioChatComponent } from './portfolio-chat.component';
 import { PortfolioAiService } from './portfolio-ai.service';
 import { PORTFOLIO_PROFILE } from './portfolio-profile';
 
@@ -19,7 +19,10 @@ describe('PortfolioChatComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule],
       declarations: [PortfolioChatComponent],
-      providers: [{ provide: PortfolioAiService, useValue: { ask } }],
+      providers: [
+        { provide: PortfolioAiService, useValue: { ask } },
+        { provide: PORTFOLIO_LOCAL_THINK_MS, useValue: 0 },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PortfolioChatComponent);
