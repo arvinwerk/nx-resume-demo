@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800">
+  <rect width="640" height="800" fill="#163528"/>
+  <circle cx="500" cy="110" r="150" fill="#1f7a4d"/>
+  <circle cx="90" cy="710" r="170" fill="#0d2018"/>
+  <circle cx="320" cy="330" r="118" fill="#f3efe6"/>
+  <path d="M150 760c48-150 100-210 170-210s122 60 170 210" fill="#d6f25c"/>
+  <text x="320" y="352" text-anchor="middle" font-family="Georgia, serif" font-size="78" fill="#12261c">AS</text>
+</svg>

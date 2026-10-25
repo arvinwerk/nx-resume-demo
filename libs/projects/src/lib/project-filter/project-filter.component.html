@@ -1,9 +1,9 @@
-<div>
+<div class="keyword-list">
   <button
     type="button"
+    class="keyword-chip"
     data-role="keyword-filter"
     *ngFor="let keyword of keywordOptions"
-    [ngStyle]="{background: keyword.selected ? '#ff0000' : '#ededed'}"
     [class.is-selected]="keyword.selected"
     [class.is-highlighted]="isHighlighted(keyword.key)"
     [attr.aria-pressed]="keyword.selected"

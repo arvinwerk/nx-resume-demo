@@ -1,79 +1,157 @@
 <a class="skip-link" href="#portfolio">Skip to portfolio</a>
-<div>
-  <nx-resume-portfolio-chat
-    [catalog]="catalog()"
-    (actionsChange)="onPortfolioActions($event)"></nx-resume-portfolio-chat>
+<header class="site-header">
+  <div class="site-header-bar">
+    <a class="brand" href="#intro">{{ catalog().profile.name }}</a>
+    <nav class="site-nav" aria-label="Sections">
+      <a href="#intro">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Work</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
 
-  <main
-    id="portfolio"
-    [class.is-adapting]="presentation.adapting()"
-    [attr.data-layout]="presentation.layout()"
-    [attr.data-audience]="presentation.audience()"
-    [attr.data-detail]="presentation.detailLevel()">
-    <p *ngIf="thinking.active()" data-role="thinking">
-      <span class="sr-only">Thinking</span>
-      <span class="think-row" aria-hidden="true">
-        <span class="think-label">{{ thinking.label() }}</span>
-        <span class="think-dots"><span></span><span></span><span></span></span>
-      </span>
-      <span class="think-track" aria-hidden="true"><span></span></span>
-    </p>
-    <p *ngFor="let note of statusNotes(); trackBy: trackNote" role="status">{{ note }}</p>
-    <button type="button" *ngIf="presentation.customized()" (click)="resetPortfolio()">
-      Reset portfolio
-    </button>
+<p class="think-banner" *ngIf="thinking.active()" data-role="thinking">
+  <span class="sr-only">Thinking</span>
+  <span class="think-row" aria-hidden="true">
+    <span class="think-label">{{ thinking.label() }}</span>
+    <span class="think-dots"><span></span><span></span><span></span></span>
+  </span>
+  <span class="think-track" aria-hidden="true"><span></span></span>
+</p>
+<div class="stage-toolbar">
+  <p class="adapt-note" *ngFor="let note of statusNotes(); trackBy: trackNote" role="status">{{ note }}</p>
+  <button type="button" class="text-button" *ngIf="presentation.customized()" (click)="resetPortfolio()">
+    Reset portfolio
+  </button>
+</div>
 
-    <ng-container *ngFor="let section of animatedSections(); trackBy: trackSection">
-      <ng-container [ngSwitch]="section.id">
-        <section *ngSwitchCase="'intro'" data-section="intro">
-          <h1>{{ catalog().profile.name }}</h1>
-          <p>{{ catalog().profile.role }}</p>
-          <p>{{ lead() }}</p>
-          <p>{{ catalog().profile.summary }}</p>
-          <div *ngIf="presentation.audience() === 'developer'">
+<main
+  id="portfolio"
+  [class.is-adapting]="presentation.adapting()"
+  [attr.data-layout]="presentation.layout()"
+  [attr.data-audience]="presentation.audience()"
+  [attr.data-detail]="presentation.detailLevel()">
+  <ng-container *ngFor="let section of animatedSections(); trackBy: trackSection">
+    <ng-container [ngSwitch]="section.id">
+      <section class="hero" *ngSwitchCase="'intro'" id="intro" data-section="intro">
+        <div class="wrap hero-grid">
+          <div>
+            <p class="eyebrow">{{ catalog().profile.role }}</p>
+            <h1>{{ catalog().profile.name }}</h1>
+            <p class="lede">{{ lead() }}</p>
+            <p class="summary">{{ catalog().profile.summary }}</p>
+          </div>
+          <figure class="portrait">
+            <img src="assets/portfolio/visuals/profile.svg" [alt]="'Monogram of ' + catalog().profile.name" width="640" height="800" />
+          </figure>
+        </div>
+        <div class="wrap" *ngIf="presentation.audience() === 'developer'">
+          <aside class="working-style">
             <p>How this portfolio is built</p>
             <ul>
               <li *ngFor="let note of catalog().profile.workingStyle">{{ note }}</li>
             </ul>
+          </aside>
+        </div>
+        <section
+          class="device-stage"
+          [style.background-image]="'url(assets/portfolio/visuals/vval-bg.svg)'"
+          aria-label="Vrienden van Amstel VIP">
+          <div class="device-scrim" aria-hidden="true"></div>
+          <h2 class="device-title">Vrienden van Amstel VIP</h2>
+          <div class="device-laptop">
+            <div class="device-laptop__screen">
+              <img src="assets/portfolio/visuals/vval-laptop.svg" alt="Laptop view of Vrienden van Amstel VIP" />
+            </div>
+            <div class="device-laptop__bottom" aria-hidden="true">
+              <div class="device-laptop__under"></div>
+            </div>
+            <div class="device-laptop__shadow" aria-hidden="true"></div>
+          </div>
+          <div class="device-phone">
+            <img src="assets/portfolio/visuals/vval-mobile.svg" alt="Phone view of Vrienden van Amstel VIP" />
           </div>
         </section>
+      </section>
 
-        <section *ngSwitchCase="'skills'" data-section="skills">
+      <section class="band" *ngSwitchCase="'skills'" id="skills" data-section="skills">
+        <div class="wrap">
           <h2>Skills</h2>
-          <p>Select a skill to filter the projects. Highlighted skills are the ones in focus.</p>
+          <p class="summary">Select a skill to filter the projects. Highlighted skills are the ones in focus.</p>
           <nx-resume-project-filter
             [keywordOptions]="keywordOptions$()"
             [highlightedSkills]="presentation.highlightedSkills()"
             (keywordClicked)="updateKeywordSelections($event)"></nx-resume-project-filter>
-        </section>
+        </div>
+      </section>
 
-        <section *ngSwitchCase="'projects'" data-section="projects">
+      <section class="section-block" *ngSwitchCase="'projects'" id="projects" data-section="projects">
+        <div class="wrap">
+          <p class="eyebrow">Work</p>
           <h2>Projects</h2>
           <nx-resume-projects
             [projects]="projects$()"
             [detailLevel]="presentation.detailLevel()"
             [highlightedSkills]="presentation.highlightedSkills()"
             [showEmpty]="catalog().projects.length > 0 && projects$().length === 0"></nx-resume-projects>
-        </section>
+        </div>
+      </section>
 
-        <section *ngSwitchCase="'experience'" data-section="experience">
+      <section class="section-block" *ngSwitchCase="'experience'" id="experience" data-section="experience">
+        <div class="wrap">
+          <p class="eyebrow">Work</p>
           <h2>Experience</h2>
-          <p>The same projects, grouped by organisation.</p>
-          <div *ngFor="let group of groups(); trackBy: trackCompany">
-            <h3>{{ group.company }}</h3>
-            <div *ngFor="let project of group.projects; trackBy: trackProject">
-              <h4>{{ project.title }}</h4>
-              <div [innerHTML]="project.shortDescription"></div>
-              <div
-                *ngIf="presentation.detailLevel() === 'detailed' && project.longDescription"
-                [innerHTML]="project.longDescription"></div>
+          <p class="summary">The same projects, grouped by organisation.</p>
+          <div class="experience-list">
+            <div *ngFor="let group of groups(); trackBy: trackCompany">
+              <h3>{{ group.company }}</h3>
+              <article class="experience-card" *ngFor="let project of group.projects; trackBy: trackProject">
+                <h4>{{ project.title }}</h4>
+                <div [innerHTML]="project.shortDescription"></div>
+                <div
+                  *ngIf="presentation.detailLevel() === 'detailed' && project.longDescription"
+                  [innerHTML]="project.longDescription"></div>
+              </article>
             </div>
           </div>
-          <p *ngIf="catalog().projects.length > 0 && projects$().length === 0">
+          <p class="empty-note" *ngIf="catalog().projects.length > 0 && projects$().length === 0">
             No projects match the current filter.
           </p>
-        </section>
-      </ng-container>
+        </div>
+      </section>
     </ng-container>
-  </main>
-</div>
+  </ng-container>
+
+  <section
+    class="device-stage"
+    [style.background-image]="'url(assets/portfolio/visuals/seating-bg.svg)'"
+    aria-label="Seating tool and invitations">
+    <div class="device-scrim" aria-hidden="true"></div>
+    <h2 class="device-title">Seating tool and invitations</h2>
+    <div class="device-laptop">
+      <div class="device-laptop__screen">
+        <img src="assets/portfolio/visuals/seating-laptop.svg" alt="Laptop view of the seating tool" />
+      </div>
+      <div class="device-laptop__bottom" aria-hidden="true">
+        <div class="device-laptop__under"></div>
+      </div>
+      <div class="device-laptop__shadow" aria-hidden="true"></div>
+    </div>
+    <div class="device-phone">
+      <img src="assets/portfolio/visuals/seating-mobile.svg" alt="Phone view of the seating tool" />
+    </div>
+  </section>
+</main>
+
+<nx-resume-portfolio-chat
+  class="chat-slot"
+  [catalog]="catalog()"
+  (actionsChange)="onPortfolioActions($event)"></nx-resume-portfolio-chat>
+
+<footer class="site-footer" id="contact">
+  <div class="site-footer-bar">
+    <p class="eyebrow">Contact</p>
+    <h2>{{ catalog().profile.name }}</h2>
+  </div>
+</footer>
